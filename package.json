@@ -1,0 +1,105 @@
+{
+  "name": "playground",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@7.12.0",
+  "description": "[![NPM version](https://img.shields.io/npm/v/pkg-name?color=a1b858&label=)](https://www.npmjs.com/package/pkg-name)",
+  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/antfu",
+  "homepage": "https://github.com/antfu/pkg-name#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antfu/pkg-name.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antfu/pkg-name/issues"
+  },
+  "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint .",
+    "prepublishOnly": "nr build",
+    "release": "bumpp && npm publish",
+    "start": "esno src/index.ts",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.27.0",
+    "@antfu/ni": "^0.18.0",
+    "@antfu/utils": "^0.5.2",
+    "@types/node": "^18.7.18",
+    "@types/polka": "^0.5.4",
+    "bumpp": "^8.2.1",
+    "eslint": "^8.23.1",
+    "esno": "^0.16.3",
+    "pnpm": "^7.12.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.3",
+    "unbuild": "^0.8.11",
+    "vite": "^3.1.2",
+    "vitest": "^0.23.4"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bumpp": "^8.2.1",
+    "eslint": "^8.23.1",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-module-utils": "^2.7.3",
+    "eslint-plugin-antfu": "^0.27.0",
+    "eslint-plugin-es": "^4.1.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsonc": "^2.4.0",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-n": "^15.2.5",
+    "eslint-plugin-promise": "^6.0.1",
+    "eslint-plugin-unicorn": "^43.0.2",
+    "eslint-plugin-vue": "^9.5.1",
+    "eslint-plugin-yml": "^1.1.0",
+    "eslint-scope": "^7.1.1",
+    "eslint-utils": "^3.0.0",
+    "eslint-visitor-keys": "^3.3.0",
+    "esno": "^0.16.3",
+    "jsonc-eslint-parser": "^2.1.0",
+    "picocolors": "^1.0.0",
+    "playwright": "^1.26.0",
+    "pnpm": "^7.12.0",
+    "polka": "^0.5.2",
+    "rimraf": "^3.0.2",
+    "sirv": "^2.0.2",
+    "typescript": "^4.8.3",
+    "unbuild": "^0.8.11",
+    "vite": "^3.1.2",
+    "vitest": "^0.23.4",
+    "vue-eslint-parser": "^9.0.3",
+    "yaml-eslint-parser": "^1.1.0"
+  }
+}
