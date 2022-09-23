@@ -40,6 +40,7 @@
   ],
   "scripts": {
     "build": "unbuild",
+    "build:play": "nr -C playground build",
     "dev": "unbuild --stub",
     "lint": "eslint .",
     "prepublishOnly": "nr build",
@@ -52,6 +53,7 @@
     "@antfu/eslint-config": "^0.27.0",
     "@antfu/ni": "^0.18.0",
     "@antfu/utils": "^0.5.2",
+    "@types/debug": "^4.1.7",
     "@types/node": "^18.7.18",
     "@types/polka": "^0.5.4",
     "bumpp": "^8.2.1",
@@ -69,6 +71,7 @@
   },
   "dependencies": {
     "bumpp": "^8.2.1",
+    "debug": "^4.3.4",
     "eslint": "^8.23.1",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-module-utils": "^2.7.3",

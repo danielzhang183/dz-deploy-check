@@ -1,19 +1,28 @@
 import { chromium } from 'playwright'
 import sirv from 'sirv'
 import polka from 'polka'
+import c from 'picocolors'
+import createDebug from 'debug'
+
+const debug = createDebug('deploy-check')
+
+export type WaitUntil = 'load' | 'domcontentloaded' | 'networkidle' | 'commit'
 
 export interface Options {
   servePath: string
   port?: number
+  waitUntil?: WaitUntil
 }
 
 export interface LogError {
   type: 'error'
+  timestamp: number
   error: unknown
 }
 
 export interface LogConsole {
   type: 'console'
+  timestamp: number
   arguments: unknown[]
 }
 
@@ -23,6 +32,7 @@ export async function deployCheck(options: Options) {
   const {
     port = 3000,
     servePath,
+    waitUntil = 'networkidle',
   } = options
 
   const URL = `http://localhost:${port}`
@@ -32,33 +42,35 @@ export async function deployCheck(options: Options) {
     .listen(3000, (err: any) => {
       if (err)
         throw err
-      console.log(`> Served on ${URL}`)
+      debug(`> Served on ${URL}`)
     })
 
   const browser = await chromium.launch()
-  console.log('> Browser initialed')
+  debug('> Browser initialed')
   const page = await browser.newPage()
-  console.log('> New page created')
+  debug('> New page created')
 
   const errorLogs: RuntimeLog[] = []
 
-  page.on('console', (message) => {
+  page.on('console', async (message) => {
     if (message.type() === 'error') {
       errorLogs.push({
         type: 'console',
-        arguments: message.args(),
+        timestamp: Date.now(),
+        arguments: await Promise.all(message.args().map(i => i.jsonValue())),
       })
     }
   })
   page.on('pageerror', (err) => {
     errorLogs.push({
       type: 'error',
+      timestamp: Date.now(),
       error: err,
     })
   })
 
-  await page.goto(URL)
-  console.log('> Navigated')
+  await page.goto(URL, { waitUntil })
+  debug('> Navigated')
 
   Promise.all([
     page.close(),
@@ -66,4 +78,17 @@ export async function deployCheck(options: Options) {
   ]).catch()
 
   return errorLogs
+}
+
+export function printErrorLogs(logs: RuntimeLog[]) {
+  console.error()
+  console.error(c.inverse(c.bold(c.red(' DEPLOY CHECK '))) + c.red(` ${logs.length} Runtime errors found`))
+  console.error()
+  logs.forEach((log, idx) => {
+    console.error(c.yellow(`----------- ${c.gray(new Date(log.timestamp).toLocaleDateString())} Error ${idx + 1} -------------`))
+    if (log.type === 'error')
+      console.error(log.error)
+    else
+      console.error(...log.arguments)
+  })
 }
