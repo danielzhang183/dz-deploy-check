@@ -3,32 +3,11 @@ import sirv from 'sirv'
 import polka from 'polka'
 import c from 'picocolors'
 import createDebug from 'debug'
+import type { Options, RuntimeLog } from './types'
 
 const debug = createDebug('deploy-check')
 
-export type WaitUntil = 'load' | 'domcontentloaded' | 'networkidle' | 'commit'
-
-export interface Options {
-  servePath: string
-  port?: number
-  waitUntil?: WaitUntil
-}
-
-export interface LogError {
-  type: 'error'
-  timestamp: number
-  error: unknown
-}
-
-export interface LogConsole {
-  type: 'console'
-  timestamp: number
-  arguments: unknown[]
-}
-
-export type RuntimeLog = LogError | LogConsole
-
-export async function deployCheck(options: Options) {
+export async function serveAndCheck(options: Options) {
   const {
     port = 3000,
     servePath,
